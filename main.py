@@ -110,6 +110,7 @@ def predSVM(dataModel: DataModel):
     xP = model.make_predictions_probability(df['condition'])
     print(xP)
     return {"clasificacion": x, "prob0": xP[0][0] , "prob1": xP[0][1]}
+  
 
 
 @app.post("/LR")
@@ -159,6 +160,7 @@ def predBoth(dataModel :DataModel):
     pfinal = 0
     prob = 0
     prob2 = 0
+    result = '__label__0'
 
     if x == '__label__1':
         xP = model.make_predictions_probability(df['condition'])
@@ -167,15 +169,16 @@ def predBoth(dataModel :DataModel):
         x = model.make_predictions(df['condition'])
         xP =  model.make_predictions_probability(df['condition'])
         prob2 = xP[0][1]
+        if x == '__label__1':
+            result = '__label__1'
+            pfinal = prob*prob2
+        else :
+            result = 'undet'
 
-    result = '__label__0'
-    if x == '__label__1':
-        result = '__label__1'
-        pfinal = prob*prob2
-    else :
-        result = 'undet'
     
-    return {"clasificacion": x, "prob":pfinal, 'a': prob, 'b':prob2}
+   
+    
+    return {"clasificacion": result, "prob":pfinal}
         
     
     
