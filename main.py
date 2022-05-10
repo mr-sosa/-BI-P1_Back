@@ -51,6 +51,8 @@ from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
 
 from fastapi import FastAPI
+nltk.download('omw-1.4')
+from fastapi.middleware.cors import CORSMiddleware
 
 class DataModel(BaseModel):
     study_and_condition : str
@@ -61,8 +63,9 @@ class DataModel(BaseModel):
 
 app = FastAPI()
 
+origins = ['*']
 
-
+app.add_middleware(CORSMiddleware, allow_origins = origins, allow_credentials = True, allow_headers = ['*'], allow_methods = ['*'])
 
 @app.get("/")
 def read_root():
